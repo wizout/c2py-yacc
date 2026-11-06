@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>c2py — AST viewer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="vendor/codemirror.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="bar">
+  <h1>c2py <span>C → AST → Python</span></h1>
+  <label class="examples">
+    Приклад
+    <select id="example"></select>
+  </label>
+  <button id="run" class="primary" title="Ctrl+Enter">Розібрати й виконати</button>
+  <span id="status" class="status"></span>
+</header>
+
+<main>
+  <section class="left">
+    <div id="editor-wrap"><textarea id="code"></textarea></div>
+    <div id="diag" class="diag" aria-live="polite"></div>
+  </section>
+
+  <section class="right">
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="ast" class="active">Дерево</button>
+      <button role="tab" data-tab="tokens">Токени</button>
+      <button role="tab" data-tab="python">Python</button>
+      <button role="tab" data-tab="output">Вивід</button>
+    </nav>
+
+    <div class="pane active" id="pane-ast">
+      <div class="tree-tools">
+        <button id="replay" title="Показати вузли в порядку згорток LR-парсера">Відтворити згортки</button>
+        <button id="expand">Розгорнути все</button>
+        <button id="collapse">Згорнути вирази</button>
+        <button id="fit">Вмістити</button>
+        <button id="svg">Зберегти SVG</button>
+        <span class="legend">
+          <i class="c-decl"></i>оголошення
+          <i class="c-stmt"></i>оператор
+          <i class="c-op"></i>операція
+          <i class="c-id"></i>змінна
+          <i class="c-lit"></i>літерал
+        </span>
+      </div>
+      <div id="tree"><svg id="tree-svg"></svg><div id="tip" class="tip"></div></div>
+      <p class="hint">Клік по вузлу — згорнути/розгорнути. Наведення — підсвічує рядок у коді. Колесо миші — масштаб.</p>
+    </div>
+
+    <div class="pane" id="pane-tokens">
+      <table class="tokens"><thead><tr><th>рядок</th><th>токен</th><th>лексема</th></tr></thead><tbody id="tok-body"></tbody></table>
+    </div>
+
+    <div class="pane" id="pane-python">
+      <div id="py-wrap"><textarea id="py"></textarea></div>
+    </div>
+
+    <div class="pane" id="pane-output">
+      <div id="match" class="match"></div>
+      <div class="outs">
+        <div><h2>Інтерпретатор AST <small id="run-code"></small></h2><pre id="run-out"></pre></div>
+        <div><h2>Згенерований Python <small id="py-code"></small></h2><pre id="py-out"></pre></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="vendor/d3.min.js"></script>
+<script src="vendor/codemirror.js"></script>
+<script src="vendor/clike.js"></script>
+<script src="vendor/python.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
